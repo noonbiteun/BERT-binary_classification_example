@@ -130,28 +130,30 @@ The specific steps for customizing the Processor are as follows:
 
 ```python
 class BinClaProcessor(DataProcessor):
- """Processor for binary classification dataset."""
- def get_train_examples(self, data_dir):
- """See base class."""
- return self._create_examples(
- self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
- def get_dev_examples(self, data_dir):
- """See base class."""
- return self._create_examples(
- self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
- def get_labels(self):
- """See base class."""
- return ["0", "1"]
- def _create_examples(self, lines, set_type):
- """Creates examples for the training and dev sets."""
- examples = []
- for (i, line) in enumerate(lines):
- guid = "%s-%s" % (set_type, i)
- text_a = line[2]
- label = line[1]
- examples.append(
- InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
- return examples
+
+    """Processor for binary classification dataset."""
+    
+    def get_train_examples(self, data_dir):
+        """See base class."""
+        return self._create_examples(self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+        
+    def get_dev_examples(self, data_dir):
+        """See base class."""
+        return self._create_examples(self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+ 
+    def get_labels(self):
+        """See base class."""
+        return ["0", "1"]
+ 
+    def _create_examples(self, lines, set_type):
+        """Creates examples for the training and dev sets."""
+        examples = []
+        for (i, line) in enumerate(lines):
+        guid = "%s-%s" % (set_type, i)
+        text_a = line[2]
+        label = line[1]
+        examples.append(InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
+        return examples
 ```
 
 
@@ -170,19 +172,19 @@ cd bert_code
 pwd
 
 python run_classifier.py \
- --task_name=bincla \
- --do_train=true \
- --do_eval=true \
- --do_predict=false \
- --data_dir=$DATASET \
- --vocab_file=$PRE_TRAINED_MODEL/vocab.txt \
- --bert_config_file=$PRE_TRAINED_MODEL/bert_config.json \
- --init_checkpoint=$PRE_TRAINED_MODEL/bert_model.ckpt \
- --max_seq_length=64 \
- --train_batch_size=32 \
- --learning_rate=2e-5 \
- --num_train_epochs=2.0 \
- --output_dir=../output \
+  --task_name=bincla \
+  --do_train=true \
+  --do_eval=true \
+  --do_predict=false \
+  --data_dir=$DATASET \
+  --vocab_file=$PRE_TRAINED_MODEL/vocab.txt \
+  --bert_config_file=$PRE_TRAINED_MODEL/bert_config.json \
+  --init_checkpoint=$PRE_TRAINED_MODEL/bert_model.ckpt \
+  --max_seq_length=64 \
+  --train_batch_size=32 \
+  --learning_rate=2e-5 \
+  --num_train_epochs=2.0 \
+  --output_dir=../output \
 ```
 
 ## 5 prediction
@@ -196,14 +198,14 @@ cd bert_code
 pwd
 
 python run_classifier.py \
- --task_name=bincla \
- --do_predict=true\
- --data_dir=$DATASET \
- --vocab_file=$PRE_TRAINED_MODEL/vocab.txt \
- --bert_config_file=$PRE_TRAINED_MODEL/bert_config.json \
- --init_checkpoint=../output \
- --max_seq_length=64 \
- --output_dir=../result
+  --task_name=bincla \
+  --do_predict=true\
+  --data_dir=$DATASET \
+  --vocab_file=$PRE_TRAINED_MODEL/vocab.txt \
+  --bert_config_file=$PRE_TRAINED_MODEL/bert_config.json \
+  --init_checkpoint=../output \
+  --max_seq_length=64 \
+  --output_dir=../result
 ```
 
 ## 6 conda-envs
